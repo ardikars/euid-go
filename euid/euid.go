@@ -73,6 +73,27 @@ func (euid EUID) Next() (EUID, error) {
 	}
 }
 
+func (euid EUID) ToBytes() []byte {
+	var bytes = make([]byte, 16)
+	bytes[0] = byte((euid.hi >> 56) & 0xff)
+	bytes[1] = byte((euid.hi >> 48) & 0xff)
+	bytes[2] = byte((euid.hi >> 40) & 0xff)
+	bytes[3] = byte((euid.hi >> 32) & 0xff)
+	bytes[4] = byte((euid.hi >> 24) & 0xff)
+	bytes[5] = byte((euid.hi >> 16) & 0xff)
+	bytes[6] = byte((euid.hi >> 8) & 0xff)
+	bytes[7] = byte(euid.hi & 0xff)
+	bytes[8] = byte((euid.hi >> 56) & 0xff)
+	bytes[9] = byte((euid.hi >> 48) & 0xff)
+	bytes[10] = byte((euid.hi >> 40) & 0xff)
+	bytes[11] = byte((euid.hi >> 32) & 0xff)
+	bytes[12] = byte((euid.hi >> 24) & 0xff)
+	bytes[13] = byte((euid.hi >> 16) & 0xff)
+	bytes[14] = byte((euid.hi >> 8) & 0xff)
+	bytes[15] = byte(euid.hi & 0xff)
+	return bytes
+}
+
 func (euid EUID) Encode(checkmod bool) string {
 	return encode(euid, checkmod)
 }
