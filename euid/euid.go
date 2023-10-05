@@ -41,6 +41,15 @@ func FromString(str string) (EUID, error) {
 	return euid, nil
 }
 
+func FromBytes(bytes []byte) (EUID, error) {
+	if bytes == nil || len(bytes) != 16 {
+		return EUID{0, 0}, errors.New("invalid length")
+	}
+	var hi = (uint64(bytes[0]) << 56) | (uint64(bytes[1]) << 48) | (uint64(bytes[2]) << 40) | (uint64(bytes[3]) << 32) | (uint64(bytes[4]) << 24) | (uint64(bytes[5]) << 16) | (uint64(bytes[6]) << 8) | uint64(bytes[7])
+	var lo = (uint64(bytes[8]) << 56) | (uint64(bytes[9]) << 48) | (uint64(bytes[10]) << 40) | (uint64(bytes[11]) << 32) | (uint64(bytes[12]) << 24) | (uint64(bytes[13]) << 16) | (uint64(bytes[14]) << 8) | uint64(bytes[15])
+	return EUID{hi, lo}, nil
+}
+
 func (euid EUID) Extension() (uint16, error) {
 	var extLen = euid.hi & extLenBitmask
 	if extLen == 0 {
@@ -83,14 +92,14 @@ func (euid EUID) ToBytes() []byte {
 	bytes[5] = byte((euid.hi >> 16) & 0xff)
 	bytes[6] = byte((euid.hi >> 8) & 0xff)
 	bytes[7] = byte(euid.hi & 0xff)
-	bytes[8] = byte((euid.hi >> 56) & 0xff)
-	bytes[9] = byte((euid.hi >> 48) & 0xff)
-	bytes[10] = byte((euid.hi >> 40) & 0xff)
-	bytes[11] = byte((euid.hi >> 32) & 0xff)
-	bytes[12] = byte((euid.hi >> 24) & 0xff)
-	bytes[13] = byte((euid.hi >> 16) & 0xff)
-	bytes[14] = byte((euid.hi >> 8) & 0xff)
-	bytes[15] = byte(euid.hi & 0xff)
+	bytes[8] = byte((euid.lo >> 56) & 0xff)
+	bytes[9] = byte((euid.lo >> 48) & 0xff)
+	bytes[10] = byte((euid.lo >> 40) & 0xff)
+	bytes[11] = byte((euid.lo >> 32) & 0xff)
+	bytes[12] = byte((euid.lo >> 24) & 0xff)
+	bytes[13] = byte((euid.lo >> 16) & 0xff)
+	bytes[14] = byte((euid.lo >> 8) & 0xff)
+	bytes[15] = byte(euid.lo & 0xff)
 	return bytes
 }
 

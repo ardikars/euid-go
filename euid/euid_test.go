@@ -88,3 +88,20 @@ func TestNext(t *testing.T) {
 		t.Fatalf("Err (%v)", err1)
 	}
 }
+
+func TestToBytesAndFromBytes(t *testing.T) {
+	var euid, err = Create()
+	if err != nil {
+		t.Fatalf("Err (%v)", err)
+	} else {
+		var bytes = euid.ToBytes()
+		var fromBytes, err1 = FromBytes(bytes)
+		if err1 != nil {
+			t.Fatalf("Err1 (%v)", err)
+		} else {
+			if euid != fromBytes {
+				t.Fatalf("Err ne (%v)", err)
+			}
+		}
+	}
+}
